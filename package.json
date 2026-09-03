@@ -1,0 +1,27 @@
+{
+  "name": "ts-flux",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "db:push": "turbo run db:push --filter=@repo/db",
+    "db:generate": "turbo run db:generate --filter=@repo/db",
+    "db:migrate": "turbo run db:migrate --filter=@repo/db",
+    "db:seed": "turbo run db:seed --filter=@repo/db",
+    "dev:services": "docker compose up -d",
+    "simulate:webhook": "tsx scripts/simulate-stripe-webhook.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.7.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}

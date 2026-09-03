@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tsflux
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tsflux"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  inngest:
+    image: inngest/inngest:latest
+    restart: unless-stopped
+    command: ["inngest", "dev"]
+    environment:
+      # The dev server auto-registers env vars ending in _URL as apps.
+      # If the worker does not show up at http://localhost:8288, add it
+      # manually in the UI: http://host.docker.internal:3001/api/inngest
+      INNGEST_DEV_SERVER_URL: http://localhost:8288
+      TS_FLUX_WORKER_URL: http://host.docker.internal:3001/api/inngest
+    ports:
+      - "8288:8288"
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  pgdata:
