@@ -1,0 +1,31 @@
+{
+  "name": "@repo/workflows",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*",
+    "@repo/events": "workspace:*",
+    "@repo/idempotency": "workspace:*",
+    "inngest": "^3.0.0",
+    "ioredis": "^5.4.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}
